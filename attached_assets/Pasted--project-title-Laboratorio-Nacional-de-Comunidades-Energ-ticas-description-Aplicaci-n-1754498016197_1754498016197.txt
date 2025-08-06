@@ -1,0 +1,96 @@
+{
+  "project_title": "Laboratorio Nacional de Comunidades Energéticas",
+  "description": "Aplicación web responsiva, minimalista y animada para gestionar información, monitoreo y procesos de comunidades energéticas.",
+  "technologies": {
+    "frontend": ["HTML", "CSS", "JavaScript", "React"],
+    "backend": ["Node.js", "Express"],
+    "auth": ["JWT", "bcrypt"],
+    "database": ["SQLite (para pruebas)", "MongoDB o PostgreSQL (producción)"],
+    "deploy": ["Replit"]
+  },
+  "theme": {
+    "primary_color": "#002b5c",
+    "secondary_color": "#b3cde0",
+    "background_color": "#f0f0f0",
+    "hover_animations": true,
+    "transitions": "smooth fade and slide transitions between pages"
+  },
+  "pages": {
+    "landing_page": {
+      "title": "Laboratorio Nacional de Comunidades Energéticas",
+      "navbar": ["Inicio", "Noticias", "Login"],
+      "carousel": {
+        "cards": [
+          "¿Quiénes somos?",
+          "Objetivos del laboratorio",
+          "¿Cómo participar?",
+          "Beneficios de las comunidades energéticas"
+        ],
+        "rotation_interval": "5s"
+      },
+      "footer": {
+        "elements": ["Logos institucionales", "Acerca de"]
+      }
+    },
+    "noticias": {
+      "layout": "igual que landing",
+      "main_frame": "Listado de noticias y anuncios ordenados por fecha (más reciente primero)",
+      "dummy_content": true
+    },
+    "login": {
+      "fields": ["usuario", "contraseña"],
+      "roles": ["administrador", "colaborador (comunidad)"],
+      "default_users": [
+        {"usuario": "admin", "password": "admin123", "rol": "administrador"},
+        {"usuario": "colaborador", "password": "colaborador123", "rol": "comunidad"}
+      ],
+      "register_option": true
+    },
+    "dashboard_admin": {
+      "navbar_extension": ["Gestión"],
+      "gestion_admin": {
+        "acciones": [
+          "Subir nuevas noticias",
+          "Editar contenido del carrusel",
+          "Aprobar procesos del sistema de comunidades",
+          "Agregar nuevos administradores",
+          "Aceptar o rechazar solicitudes de comunidades"
+        ]
+      }
+    },
+    "dashboard_comunidad": {
+      "navbar_extension": ["Gestión Comunidad"],
+      "gestion_comunidad": {
+        "acciones": [
+          "Crear comunidad energética",
+          "Subir documentos de validación",
+          "Esperar aprobación de administrador"
+        ]
+      }
+    },
+    "monitoreo_comunidades": {
+      "navbar_extension": ["Monitoreo de Comunidades"],
+      "contenido": [
+        "Dashboard con producción energética",
+        "Indicadores de viabilidad",
+        "KPIs energéticos",
+        "Esquemas de análisis técnico"
+      ],
+      "data_type": "dummy (versión inicial)"
+    }
+  },
+  "responsiveness": true,
+  "animations": {
+    "on_hover": true,
+    "page_transitions": true
+  },
+  "assets": {
+    "images": "temporales",
+    "noticias": "datos dummies",
+    "logos": "institucionales genéricos"
+  },
+  "user_management": {
+    "auth_protected_routes": true,
+    "role_based_navigation": true
+  }
+}
