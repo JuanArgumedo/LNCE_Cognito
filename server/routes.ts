@@ -210,7 +210,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const documents = {};
+      const documents: { [key: string]: string } = {};
       
       if (files) {
         Object.keys(files).forEach(key => {

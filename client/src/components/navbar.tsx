@@ -25,48 +25,38 @@ export default function Navbar() {
             </div>
             <div className="hidden md:block ml-10">
               <div className="flex items-baseline space-x-4">
-                <Link href="/">
-                  <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                    isActive('/') ? 'text-primary' : 'text-gray-700 hover:text-accent'
-                  }`}>
-                    Inicio
-                  </a>
+                <Link href="/" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                  isActive('/') ? 'text-primary' : 'text-gray-700 hover:text-accent'
+                }`}>
+                  Inicio
                 </Link>
-                <Link href="/news">
-                  <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                    isActive('/news') ? 'text-primary' : 'text-gray-700 hover:text-accent'
-                  }`}>
-                    Noticias
-                  </a>
+                <Link href="/news" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                  isActive('/news') ? 'text-primary' : 'text-gray-700 hover:text-accent'
+                }`}>
+                  Noticias
                 </Link>
                 
                 {isAuthenticated && user?.role === 'administrador' && (
-                  <Link href="/admin">
-                    <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                      isActive('/admin') ? 'text-primary' : 'text-gray-700 hover:text-accent'
-                    }`}>
-                      Gestión
-                    </a>
+                  <Link href="/admin" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                    isActive('/admin') ? 'text-primary' : 'text-gray-700 hover:text-accent'
+                  }`}>
+                    Gestión
                   </Link>
                 )}
                 
                 {isAuthenticated && user?.role === 'comunidad' && (
-                  <Link href="/community">
-                    <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                      isActive('/community') ? 'text-primary' : 'text-gray-700 hover:text-accent'
-                    }`}>
-                      Gestión Comunidad
-                    </a>
+                  <Link href="/community" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                    isActive('/community') ? 'text-primary' : 'text-gray-700 hover:text-accent'
+                  }`}>
+                    Gestión Comunidad
                   </Link>
                 )}
                 
                 {isAuthenticated && (
-                  <Link href="/monitoring">
-                    <a className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                      isActive('/monitoring') ? 'text-primary' : 'text-gray-700 hover:text-accent'
-                    }`}>
-                      Monitoreo
-                    </a>
+                  <Link href="/monitoring" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                    isActive('/monitoring') ? 'text-primary' : 'text-gray-700 hover:text-accent'
+                  }`}>
+                    Monitoreo
                   </Link>
                 )}
               </div>

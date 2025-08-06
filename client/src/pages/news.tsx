@@ -4,13 +4,23 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Tag, ArrowRight, CloudSun, Wind, Zap } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
+interface NewsArticle {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  category: string;
+  createdAt: string;
+  imageUrl?: string | null;
+}
+
 export default function News() {
-  const { data: news = [], isLoading, error } = useQuery({
+  const { data: news = [], isLoading, error } = useQuery<NewsArticle[]>({
     queryKey: ['/api/news'],
     retry: false,
   });
 
-  const defaultNews = [
+  const defaultNews: NewsArticle[] = [
     {
       id: '1',
       title: 'Nueva regulación facilita la creación de comunidades energéticas',

@@ -46,8 +46,21 @@ function KPICard({ title, value, change, changeType, icon, description }: KPICar
   );
 }
 
+interface Community {
+  id: string;
+  name: string;
+  type: string;
+  location: string;
+  capacity: number;
+  description?: string;
+  status: string;
+  createdAt?: string;
+  production?: string;
+  efficiency?: string;
+}
+
 export default function MonitoringDashboard() {
-  const { data: communities = [] } = useQuery({
+  const { data: communities = [] } = useQuery<Community[]>({
     queryKey: ['/api/communities'],
     retry: false,
   });

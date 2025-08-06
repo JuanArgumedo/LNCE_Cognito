@@ -41,7 +41,7 @@ export default function Landing() {
     retry: false,
   });
 
-  const slides = carouselSlides?.length ? carouselSlides : defaultSlides;
+  const slides = (carouselSlides && Array.isArray(carouselSlides) && carouselSlides.length > 0) ? carouselSlides : defaultSlides;
 
   return (
     <div className="animate-fade-in">

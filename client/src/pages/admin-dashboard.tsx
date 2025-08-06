@@ -16,10 +16,21 @@ import {
   Clock 
 } from 'lucide-react';
 
+interface Community {
+  id: string;
+  name: string;
+  type: string;
+  location: string;
+  capacity: number;
+  description: string;
+  status: string;
+  createdAt: string;
+}
+
 export default function AdminDashboard() {
   const { toast } = useToast();
 
-  const { data: communities = [] } = useQuery({
+  const { data: communities = [] } = useQuery<Community[]>({
     queryKey: ['/api/communities'],
     retry: false,
   });

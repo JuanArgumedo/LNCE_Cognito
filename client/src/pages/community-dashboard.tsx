@@ -27,6 +27,17 @@ const communitySchema = z.object({
 
 type CommunityForm = z.infer<typeof communitySchema>;
 
+interface Community {
+  id: string;
+  name: string;
+  type: string;
+  location: string;
+  capacity: number;
+  description: string;
+  status: string;
+  createdAt: string;
+}
+
 export default function CommunityDashboard() {
   const { toast } = useToast();
   const [files, setFiles] = useState<{
@@ -35,7 +46,7 @@ export default function CommunityDashboard() {
     legal_docs?: File;
   }>({});
 
-  const { data: communities = [], isLoading } = useQuery({
+  const { data: communities = [], isLoading } = useQuery<Community[]>({
     queryKey: ['/api/communities'],
     retry: false,
   });
