@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Nacional de Comunidades Energéticas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#002b5c',
+                        secondary: '#b3cde0',
+                        accent: '#0066cc',
+                        background: '#f0f0f0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .carousel-transition {
+            transition: transform 0.5s ease-in-out;
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 43, 92, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background font-sans">
+
+    <!-- @COMPONENT: NavigationBar [currentUser, userRole] -->
+    <nav class="bg-white shadow-lg border-b-2 border-primary sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold text-primary">LNCE</h1>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-4" id="nav-menu">
+                            <a href="#" data-page="landing" class="nav-link text-primary hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Inicio</a>
+                            <a href="#" data-page="news" class="nav-link text-gray-700 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Noticias</a>
+                            <!-- Admin only navigation -->
+                            <a href="#" data-page="admin" class="nav-link hidden text-gray-700 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" id="admin-nav">Gestión</a>
+                            <!-- Community user navigation -->
+                            <a href="#" data-page="community" class="nav-link hidden text-gray-700 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" id="community-nav">Gestión Comunidad</a>
+                            <!-- Monitoring (both roles) -->
+                            <a href="#" data-page="monitoring" class="nav-link hidden text-gray-700 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" id="monitoring-nav">Monitoreo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="user-welcome" class="hidden text-sm text-gray-700">Bienvenido, <span data-bind="user.name" id="username">Usuario</span></span>
+                    <button id="login-btn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-sm font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                    <button id="logout-btn" class="hidden bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationBar -->
+
+    <!-- Main Content Container -->
+    <main class="min-h-screen">
+
+        <!-- @COMPONENT: LandingPage -->
+        <div id="landing-page" class="page-content animate-fade-in">
+            <!-- Hero Section -->
+            <section class="bg-gradient-to-r from-primary to-blue-800 text-white py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-slide-in">
+                        Laboratorio Nacional de<br>Comunidades Energéticas
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 text-secondary animate-slide-in">
+                        Impulsando la transición energética a través de comunidades sostenibles
+                    </p>
+                    <!-- Modern cityscape with renewable energy infrastructure -->
+                    <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=400" alt="Modern city with renewable energy infrastructure" class="rounded-xl shadow-lg mx-auto mt-8 w-full max-w-4xl h-64 object-cover" />
+                </div>
+            </section>
+
+            <!-- Information Carousel -->
+            <section class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-primary mb-4">Conoce más sobre nosotros</h2>
+                        <p class="text-gray-600 text-lg">Descubre cómo las comunidades energéticas están transformando el futuro</p>
+                    </div>
+                    
+                    <!-- @FUNCTIONALITY: Carousel should auto-rotate every 5 seconds -->
+                    <div class="relative overflow-hidden rounded-xl shadow-lg" id="info-carousel">
+                        <div class="carousel-container flex transition-transform duration-500 ease-in-out" id="carousel-track">
+                            <!-- Slide 1: ¿Quiénes somos? -->
+                            <div class="carousel-slide w-full flex-shrink-0 bg-gradient-to-br from-blue-50 to-secondary p-12">
+                                <div class="max-w-4xl mx-auto text-center">
+                                    <i class="fas fa-users text-6xl text-primary mb-6"></i>
+                                    <h3 class="text-2xl font-bold text-primary mb-4">¿Quiénes somos?</h3>
+                                    <p class="text-gray-700 text-lg leading-relaxed">
+                                        Somos el centro nacional de investigación y desarrollo para comunidades energéticas, 
+                                        promoviendo la democratización del sector energético y la participación ciudadana 
+                                        en la transición hacia un modelo energético más sostenible y descentralizado.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 2: Objetivos del laboratorio -->
+                            <div class="carousel-slide w-full flex-shrink-0 bg-gradient-to-br from-green-50 to-green-100 p-12">
+                                <div class="max-w-4xl mx-auto text-center">
+                                    <i class="fas fa-bullseye text-6xl text-green-600 mb-6"></i>
+                                    <h3 class="text-2xl font-bold text-primary mb-4">Objetivos del laboratorio</h3>
+                                    <p class="text-gray-700 text-lg leading-relaxed">
+                                        Facilitar la creación, desarrollo y gestión de comunidades energéticas, 
+                                        proporcionando herramientas tecnológicas, asesoramiento técnico y 
+                                        monitoreo de indicadores clave para maximizar la eficiencia energética y el impacto social.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 3: ¿Cómo participar? -->
+                            <div class="carousel-slide w-full flex-shrink-0 bg-gradient-to-br from-purple-50 to-purple-100 p-12">
+                                <div class="max-w-4xl mx-auto text-center">
+                                    <i class="fas fa-hands-helping text-6xl text-purple-600 mb-6"></i>
+                                    <h3 class="text-2xl font-bold text-primary mb-4">¿Cómo participar?</h3>
+                                    <p class="text-gray-700 text-lg leading-relaxed">
+                                        Únete registrándote en nuestra plataforma, presenta tu propuesta de comunidad energética, 
+                                        sube la documentación requerida y nuestro equipo te acompañará en todo el proceso 
+                                        de validación, implementación y seguimiento de tu proyecto.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Slide 4: Beneficios -->
+                            <div class="carousel-slide w-full flex-shrink-0 bg-gradient-to-br from-orange-50 to-orange-100 p-12">
+                                <div class="max-w-4xl mx-auto text-center">
+                                    <i class="fas fa-award text-6xl text-orange-600 mb-6"></i>
+                                    <h3 class="text-2xl font-bold text-primary mb-4">Beneficios de las comunidades energéticas</h3>
+                                    <p class="text-gray-700 text-lg leading-relaxed">
+                                        Reducción de costos energéticos, mayor autonomía energética, impacto ambiental positivo, 
+                                        fortalecimiento del tejido social local y acceso a tecnologías de vanguardia 
+                                        para la generación y gestión de energías renovables.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Carousel Indicators -->
+                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300" data-slide="0"></button>
+                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300" data-slide="1"></button>
+                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300" data-slide="2"></button>
+                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all duration-300" data-slide="3"></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="py-16 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center p-6 bg-white rounded-xl shadow-md hover-lift">
+                            <i class="fas fa-solar-panel text-4xl text-primary mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">150+</h3>
+                            <p class="text-gray-600">Comunidades Registradas</p>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-xl shadow-md hover-lift">
+                            <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">25 MW</h3>
+                            <p class="text-gray-600">Capacidad Instalada</p>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-xl shadow-md hover-lift">
+                            <i class="fas fa-users text-4xl text-accent mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">12,000+</h3>
+                            <p class="text-gray-600">Familias Beneficiadas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- @END_COMPONENT: LandingPage -->
+
+        <!-- @COMPONENT: NewsPage -->
+        <div id="news-page" class="page-content hidden animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-primary mb-4">Noticias y Anuncios</h1>
+                    <p class="text-gray-600 text-lg">Mantente informado sobre las últimas novedades del sector energético</p>
+                </div>
+
+                <!-- @MAP: news.map(article => ( -->
+                <div class="space-y-8">
+                    <article class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift" data-mock="true">
+                        <div class="md:flex">
+                            <!-- Solar panels installation on residential rooftop -->
+                            <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" alt="Solar panel installation" class="w-full md:w-48 h-48 object-cover" />
+                            <div class="p-6 flex-1">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span data-bind="article.date">15 de Enero, 2024</span>
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-tag mr-2"></i>
+                                    <span data-bind="article.category">Tecnología</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-primary mb-3" data-bind="article.title">
+                                    Nueva regulación facilita la creación de comunidades energéticas
+                                </h2>
+                                <p class="text-gray-700 mb-4" data-bind="article.excerpt">
+                                    El gobierno aprueba un marco regulatorio simplificado que reduce los trámites administrativos 
+                                    para la constitución de comunidades energéticas locales...
+                                </p>
+                                <button class="text-accent hover:text-primary font-medium transition-colors duration-300">
+                                    Leer más <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift" data-mock="true">
+                        <div class="md:flex">
+                            <!-- Wind turbines in countryside landscape -->
+                            <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" alt="Wind turbines in field" class="w-full md:w-48 h-48 object-cover" />
+                            <div class="p-6 flex-1">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span data-bind="article.date">12 de Enero, 2024</span>
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-tag mr-2"></i>
+                                    <span data-bind="article.category">Innovación</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-primary mb-3" data-bind="article.title">
+                                    Convocatoria abierta para proyectos piloto de energía eólica comunitaria
+                                </h2>
+                                <p class="text-gray-700 mb-4" data-bind="article.excerpt">
+                                    Se abren 50 millones de euros en fondos para impulsar proyectos innovadores 
+                                    de energía eólica gestionados por comunidades locales...
+                                </p>
+                                <button class="text-accent hover:text-primary font-medium transition-colors duration-300">
+                                    Leer más <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="bg-white rounded-xl shadow-lg overflow-hidden hover-lift" data-mock="true">
+                        <div class="md:flex">
+                            <!-- Smart grid infrastructure and digital monitoring -->
+                            <img src="https://pixabay.com/get/gd2a72105672fe302ea478d699416a9e9ef9f9aeb037e71ed40e6bdeca7406858797f8cbc7dbe19343c81faf8ef7d0e70b9f0be096d0e17a74e9e185fe52f2b8e_1280.jpg" alt="Smart grid technology" class="w-full md:w-48 h-48 object-cover" />
+                            <div class="p-6 flex-1">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span data-bind="article.date">8 de Enero, 2024</span>
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-tag mr-2"></i>
+                                    <span data-bind="article.category">Digitalización</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-primary mb-3" data-bind="article.title">
+                                    Nueva plataforma de monitoreo inteligente para comunidades energéticas
+                                </h2>
+                                <p class="text-gray-700 mb-4" data-bind="article.excerpt">
+                                    Presentamos nuestra nueva herramienta de análisis en tiempo real que permite 
+                                    optimizar el consumo y la producción energética comunitaria...
+                                </p>
+                                <button class="text-accent hover:text-primary font-medium transition-colors duration-300">
+                                    Leer más <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+        <!-- @END_COMPONENT: NewsPage -->
+
+        <!-- @COMPONENT: LoginPage -->
+        <div id="login-page" class="page-content hidden animate-fade-in">
+            <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-blue-800 py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md w-full space-y-8">
+                    <div class="bg-white rounded-xl shadow-xl p-8">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-bold text-primary">Iniciar Sesión</h2>
+                            <p class="text-gray-600 mt-2">Accede a tu cuenta del laboratorio</p>
+                        </div>
+                        
+                        <form id="login-form" class="space-y-6">
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Ingresa tu usuario"
+                                    data-implementation="Should validate against user database"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Ingresa tu contraseña"
+                                    data-implementation="Should be hashed and verified"
+                                >
+                            </div>
+                            
+                            <button 
+                                type="submit" 
+                                class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 font-medium"
+                                data-event="click:handleLogin"
+                                data-implementation="Should authenticate user and redirect based on role"
+                            >
+                                <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                            </button>
+                        </form>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-600">¿No tienes cuenta?</p>
+                            <button 
+                                id="show-register" 
+                                class="text-accent hover:text-primary font-medium transition-colors duration-300"
+                                data-implementation="Should show registration form"
+                            >
+                                Registrarse aquí
+                            </button>
+                        </div>
+                        
+                        <!-- Demo Credentials -->
+                        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-medium text-gray-800 mb-2">Credenciales de prueba:</h4>
+                            <div class="text-sm text-gray-600">
+                                <p><strong>Admin:</strong> admin / admin123</p>
+                                <p><strong>Comunidad:</strong> colaborador / colaborador123</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: LoginPage -->
+
+        <!-- @COMPONENT: RegisterPage -->
+        <div id="register-page" class="page-content hidden animate-fade-in">
+            <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-blue-800 py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md w-full space-y-8">
+                    <div class="bg-white rounded-xl shadow-xl p-8">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-bold text-primary">Registro</h2>
+                            <p class="text-gray-600 mt-2">Crea tu cuenta para acceder al laboratorio</p>
+                        </div>
+                        
+                        <form id="register-form" class="space-y-6">
+                            <div>
+                                <label for="reg-username" class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+                                <input 
+                                    type="text" 
+                                    id="reg-username" 
+                                    name="username" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Elige un nombre de usuario"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="reg-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input 
+                                    type="email" 
+                                    id="reg-email" 
+                                    name="email" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="tu@email.com"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="reg-password" class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    id="reg-password" 
+                                    name="password" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Mínimo 8 caracteres"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="reg-role" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Usuario</label>
+                                <select 
+                                    id="reg-role" 
+                                    name="role" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                >
+                                    <option value="">Selecciona tu rol</option>
+                                    <option value="comunidad">Colaborador (Comunidad)</option>
+                                    <option value="administrador">Administrador</option>
+                                </select>
+                            </div>
+                            
+                            <button 
+                                type="submit" 
+                                class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 font-medium"
+                                data-event="click:handleRegister"
+                            >
+                                <i class="fas fa-user-plus mr-2"></i>Crear Cuenta
+                            </button>
+                        </form>
+                        
+                        <div class="mt-6 text-center">
+                            <p class="text-gray-600">¿Ya tienes cuenta?</p>
+                            <button 
+                                id="show-login" 
+                                class="text-accent hover:text-primary font-medium transition-colors duration-300"
+                            >
+                                Iniciar sesión aquí
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: RegisterPage -->
+
+        <!-- @COMPONENT: AdminDashboard -->
+        <div id="admin-page" class="page-content hidden animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-primary mb-4">Panel de Administración</h1>
+                    <p class="text-gray-600 text-lg">Gestiona contenidos y procesos del sistema</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Upload News -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-newspaper text-3xl text-primary mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Gestionar Noticias</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Crear, editar y publicar noticias y anuncios</p>
+                        <button class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                            <i class="fas fa-plus mr-2"></i>Nueva Noticia
+                        </button>
+                    </div>
+
+                    <!-- Edit Carousel -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-images text-3xl text-green-600 mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Editar Carrusel</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Modificar contenido del carrusel principal</p>
+                        <button class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-all duration-300">
+                            <i class="fas fa-edit mr-2"></i>Editar Carrusel
+                        </button>
+                    </div>
+
+                    <!-- Approve Communities -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-check-circle text-3xl text-blue-600 mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Aprobar Comunidades</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Revisar y aprobar solicitudes de comunidades</p>
+                        <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300">
+                            <i class="fas fa-tasks mr-2"></i>Ver Solicitudes
+                        </button>
+                    </div>
+
+                    <!-- Add Administrators -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-user-shield text-3xl text-purple-600 mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Gestión de Usuarios</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Agregar nuevos administradores y gestionar roles</p>
+                        <button class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-all duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Gestionar Usuarios
+                        </button>
+                    </div>
+
+                    <!-- System Analytics -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-chart-bar text-3xl text-orange-600 mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Analíticas</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Ver estadísticas del sistema y comunidades</p>
+                        <button class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-all duration-300">
+                            <i class="fas fa-analytics mr-2"></i>Ver Reportes
+                        </button>
+                    </div>
+
+                    <!-- Settings -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-cog text-3xl text-gray-600 mr-4"></i>
+                            <h3 class="text-xl font-bold text-gray-800">Configuración</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Ajustes generales del sistema</p>
+                        <button class="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-all duration-300">
+                            <i class="fas fa-cogs mr-2"></i>Configurar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="mt-12 bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Actividad Reciente</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-blue-50 rounded-lg" data-mock="true">
+                            <i class="fas fa-file-upload text-blue-600 mr-4"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Nueva solicitud de comunidad energética</p>
+                                <p class="text-sm text-gray-600">Comunidad Solar Valle Verde - Hace 2 horas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-green-50 rounded-lg" data-mock="true">
+                            <i class="fas fa-check text-green-600 mr-4"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Comunidad aprobada exitosamente</p>
+                                <p class="text-sm text-gray-600">Eólica Montaña Azul - Hace 1 día</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AdminDashboard -->
+
+        <!-- @COMPONENT: CommunityDashboard -->
+        <div id="community-page" class="page-content hidden animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-primary mb-4">Gestión de Comunidad</h1>
+                    <p class="text-gray-600 text-lg">Crea y gestiona tu comunidad energética</p>
+                </div>
+
+                <!-- Community Creation Wizard -->
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Crear Nueva Comunidad Energética</h2>
+                    
+                    <form id="community-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="community-name" class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Comunidad</label>
+                                <input 
+                                    type="text" 
+                                    id="community-name" 
+                                    name="name" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Ej: Comunidad Solar Valle Verde"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="community-type" class="block text-sm font-medium text-gray-700 mb-2">Tipo de Energía</label>
+                                <select 
+                                    id="community-type" 
+                                    name="type" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                >
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="solar">Solar</option>
+                                    <option value="eolica">Eólica</option>
+                                    <option value="hidraulica">Hidráulica</option>
+                                    <option value="biomasa">Biomasa</option>
+                                    <option value="mixta">Mixta</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="location" class="block text-sm font-medium text-gray-700 mb-2">Ubicación</label>
+                                <input 
+                                    type="text" 
+                                    id="location" 
+                                    name="location" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="Ciudad, Provincia"
+                                >
+                            </div>
+                            
+                            <div>
+                                <label for="capacity" class="block text-sm font-medium text-gray-700 mb-2">Capacidad Estimada (kW)</label>
+                                <input 
+                                    type="number" 
+                                    id="capacity" 
+                                    name="capacity" 
+                                    required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                    placeholder="100"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Descripción del Proyecto</label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                rows="4" 
+                                required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                                placeholder="Describe tu proyecto de comunidad energética..."
+                            ></textarea>
+                        </div>
+
+                        <!-- Document Upload Section -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4">Documentos de Validación</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Estudio de Viabilidad Técnica</label>
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf,.doc,.docx" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                                        data-implementation="Should handle file upload and validation"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Análisis Económico</label>
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf,.xls,.xlsx" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                                        data-implementation="Should handle file upload and validation"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Documentación Legal</label>
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                                        data-implementation="Should handle file upload and validation"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 font-medium"
+                            data-event="click:handleCommunitySubmission"
+                        >
+                            <i class="fas fa-paper-plane mr-2"></i>Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Community Status -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Estado de Solicitudes</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg" data-mock="true">
+                            <div>
+                                <h4 class="font-medium text-gray-800">Comunidad Solar Valle Verde</h4>
+                                <p class="text-sm text-gray-600">Enviado el 10 de Enero, 2024</p>
+                            </div>
+                            <span class="px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full text-sm font-medium">
+                                <i class="fas fa-clock mr-1"></i>En Revisión
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg" data-mock="true">
+                            <div>
+                                <h4 class="font-medium text-gray-800">Eólica Montaña Azul</h4>
+                                <p class="text-sm text-gray-600">Enviado el 5 de Enero, 2024</p>
+                            </div>
+                            <span class="px-3 py-1 bg-green-200 text-green-800 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>Aprobado
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: CommunityDashboard -->
+
+        <!-- @COMPONENT: MonitoringDashboard -->
+        <div id="monitoring-page" class="page-content hidden animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-primary mb-4">Monitoreo de Comunidades</h1>
+                    <p class="text-gray-600 text-lg">Dashboard de producción energética y KPIs</p>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Producción Total</p>
+                                <p class="text-2xl font-bold text-primary" data-bind="kpi.totalProduction">1,250 MWh</p>
+                            </div>
+                            <i class="fas fa-bolt text-3xl text-yellow-500"></i>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-green-600 text-sm font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i>+12.5%
+                            </span>
+                            <span class="text-gray-600 text-sm">vs mes anterior</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Comunidades Activas</p>
+                                <p class="text-2xl font-bold text-primary" data-bind="kpi.activeCommunities">24</p>
+                            </div>
+                            <i class="fas fa-home text-3xl text-green-500"></i>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-green-600 text-sm font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i>+3
+                            </span>
+                            <span class="text-gray-600 text-sm">nuevas este mes</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Eficiencia Media</p>
+                                <p class="text-2xl font-bold text-primary" data-bind="kpi.efficiency">87.3%</p>
+                            </div>
+                            <i class="fas fa-chart-line text-3xl text-blue-500"></i>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-green-600 text-sm font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i>+2.1%
+                            </span>
+                            <span class="text-gray-600 text-sm">optimización</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">CO₂ Evitado</p>
+                                <p class="text-2xl font-bold text-primary" data-bind="kpi.co2Saved">450 Tn</p>
+                            </div>
+                            <i class="fas fa-leaf text-3xl text-green-500"></i>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-green-600 text-sm font-medium">
+                                <i class="fas fa-arrow-up mr-1"></i>+15%
+                            </span>
+                            <span class="text-gray-600 text-sm">impacto ambiental</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Production Chart -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-primary mb-4">Producción Energética Mensual</h3>
+                        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                            <!-- Energy production chart with monthly bars showing increase -->
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300" alt="Energy production chart dashboard" class="w-full h-full object-cover rounded-lg" />
+                            <!-- @FUNCTIONALITY: Should implement Chart.js or similar for real-time data visualization -->
+                        </div>
+                    </div>
+
+                    <!-- Energy Mix -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-primary mb-4">Mix Energético por Tipo</h3>
+                        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                            <!-- Renewable energy sources pie chart visualization -->
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=300" alt="Renewable energy mix chart" class="w-full h-full object-cover rounded-lg" />
+                            <!-- @FUNCTIONALITY: Should implement pie chart showing solar 60%, wind 25%, hydro 10%, biomass 5% -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Performance Table -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-primary mb-6">Rendimiento por Comunidad</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comunidad</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacidad</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producción</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Eficiencia</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- @MAP: communities.map(community => ( -->
+                                <tr data-mock="true">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900" data-bind="community.name">Solar Valle Verde</div>
+                                        <div class="text-sm text-gray-500" data-bind="community.location">Andalucía</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-sun mr-1"></i>Solar
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.capacity">500 kW</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.production">45.2 MWh</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.efficiency">92.1%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check-circle mr-1"></i>Activa
+                                        </span>
+                                    </td>
+                                </tr>
+                                
+                                <tr data-mock="true">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900" data-bind="community.name">Eólica Montaña Azul</div>
+                                        <div class="text-sm text-gray-500" data-bind="community.location">Galicia</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <i class="fas fa-wind mr-1"></i>Eólica
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.capacity">2 MW</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.production">180.5 MWh</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.efficiency">88.7%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check-circle mr-1"></i>Activa
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr data-mock="true">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900" data-bind="community.name">Hidráulica Río Claro</div>
+                                        <div class="text-sm text-gray-500" data-bind="community.location">Asturias</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <i class="fas fa-water mr-1"></i>Hidráulica
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.capacity">800 kW</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.production">95.3 MWh</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-bind="community.efficiency">95.8%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-tools mr-1"></i>Mantenimiento
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!-- @END_MAP )) -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MonitoringDashboard -->
+
+    </main>
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Laboratorio Nacional de Comunidades Energéticas</h3>
+                    <p class="text-secondary">
+                        Impulsando la transición energética a través de comunidades sostenibles y tecnología avanzada.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Enlaces Útiles</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-secondary hover:text-white transition-colors duration-300">Sobre Nosotros</a></li>
+                        <li><a href="#" class="text-secondary hover:text-white transition-colors duration-300">Documentación</a></li>
+                        <li><a href="#" class="text-secondary hover:text-white transition-colors duration-300">Soporte Técnico</a></li>
+                        <li><a href="#" class="text-secondary hover:text-white transition-colors duration-300">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Logos Institucionales</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <!-- Generic institutional logo placeholders -->
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-university text-white"></i>
+                        </div>
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-globe-europe text-white"></i>
+                        </div>
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-leaf text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-secondary mt-8 pt-8 text-center">
+                <p class="text-secondary">
+                    &copy; 2024 Laboratorio Nacional de Comunidades Energéticas. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        (function() {
+            // @STATE: currentUser:object = null, userRole:string = null, currentPage:string = 'landing'
+            let currentUser = null;
+            let userRole = null;
+            let currentPage = 'landing';
+            let carouselIndex = 0;
+            let carouselInterval;
+
+            // Mock user database
+            const users = [
+                { username: 'admin', password: 'admin123', role: 'administrador', name: 'Administrador' },
+                { username: 'colaborador', password: 'colaborador123', role: 'comunidad', name: 'Colaborador' }
+            ];
+
+            // DOM Elements
+            const pages = {
+                landing: document.getElementById('landing-page'),
+                news: document.getElementById('news-page'),
+                login: document.getElementById('login-page'),
+                register: document.getElementById('register-page'),
+                admin: document.getElementById('admin-page'),
+                community: document.getElementById('community-page'),
+                monitoring: document.getElementById('monitoring-page')
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userWelcome = document.getElementById('user-welcome');
+            const username = document.getElementById('username');
+
+            // Navigation
+            function showPage(pageName) {
+                // Hide all pages
+                Object.values(pages).forEach(page => {
+                    if (page) page.classList.add('hidden');
+                });
+                
+                // Show selected page
+                if (pages[pageName]) {
+                    pages[pageName].classList.remove('hidden');
+                    currentPage = pageName;
+                }
+
+                // Update nav active state
+                navLinks.forEach(link => {
+                    link.classList.remove('text-primary');
+                    link.classList.add('text-gray-700');
+                });
+                
+                const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('text-primary');
+                    activeLink.classList.remove('text-gray-700');
+                }
+            }
+
+            // Authentication
+            function login(username, password) {
+                const user = users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    userRole = user.role;
+                    updateUI();
+                    showPage('landing');
+                    return true;
+                }
+                return false;
+            }
+
+            function logout() {
+                currentUser = null;
+                userRole = null;
+                updateUI();
+                showPage('landing');
+            }
+
+            function updateUI() {
+                if (currentUser) {
+                    loginBtn.classList.add('hidden');
+                    logoutBtn.classList.remove('hidden');
+                    userWelcome.classList.remove('hidden');
+                    username.textContent = currentUser.name;
+                    
+                    // Show role-based navigation
+                    if (userRole === 'administrador') {
+                        document.getElementById('admin-nav').classList.remove('hidden');
+                        document.getElementById('monitoring-nav').classList.remove('hidden');
+                    } else if (userRole === 'comunidad') {
+                        document.getElementById('community-nav').classList.remove('hidden');
+                        document.getElementById('monitoring-nav').classList.remove('hidden');
+                    }
+                } else {
+                    loginBtn.classList.remove('hidden');
+                    logoutBtn.classList.add('hidden');
+                    userWelcome.classList.add('hidden');
+                    
+                    // Hide role-based navigation
+                    document.getElementById('admin-nav').classList.add('hidden');
+                    document.getElementById('community-nav').classList.add('hidden');
+                    document.getElementById('monitoring-nav').classList.add('hidden');
+                }
+            }
+
+            // Carousel functionality
+            function initCarousel() {
+                const carouselTrack = document.getElementById('carousel-track');
+                const indicators = document.querySelectorAll('.carousel-indicator');
+                const totalSlides = 4;
+
+                function updateCarousel() {
+                    if (carouselTrack) {
+                        carouselTrack.style.transform = `translateX(-${carouselIndex * 100}%)`;
+                    }
+                    
+                    indicators.forEach((indicator, index) => {
+                        if (index === carouselIndex) {
+                            indicator.classList.add('bg-white');
+                            indicator.classList.remove('bg-opacity-50');
+                        } else {
+                            indicator.classList.remove('bg-white');
+                            indicator.classList.add('bg-opacity-50');
+                        }
+                    });
+                }
+
+                function nextSlide() {
+                    carouselIndex = (carouselIndex + 1) % totalSlides;
+                    updateCarousel();
+                }
+
+                // Auto-rotation every 5 seconds
+                function startCarousel() {
+                    carouselInterval = setInterval(nextSlide, 5000);
+                }
+
+                function stopCarousel() {
+                    if (carouselInterval) {
+                        clearInterval(carouselInterval);
+                    }
+                }
+
+                // Indicator click handlers
+                indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => {
+                        carouselIndex = index;
+                        updateCarousel();
+                        stopCarousel();
+                        startCarousel();
+                    });
+                });
+
+                // Pause on hover
+                const carousel = document.getElementById('info-carousel');
+                if (carousel) {
+                    carousel.addEventListener('mouseenter', stopCarousel);
+                    carousel.addEventListener('mouseleave', startCarousel);
+                }
+
+                updateCarousel();
+                startCarousel();
+            }
+
+            // Event Listeners
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.dataset.page;
+                    
+                    // Check if page requires authentication
+                    if (['admin', 'community', 'monitoring'].includes(page) && !currentUser) {
+                        showPage('login');
+                        return;
+                    }
+                    
+                    // Check role permissions
+                    if (page === 'admin' && userRole !== 'administrador') {
+                        alert('Acceso denegado: Se requieren permisos de administrador');
+                        return;
+                    }
+                    
+                    if (page === 'community' && userRole !== 'comunidad') {
+                        alert('Acceso denegado: Se requieren permisos de colaborador');
+                        return;
+                    }
+                    
+                    showPage(page);
+                });
+            });
+
+            loginBtn.addEventListener('click', () => showPage('login'));
+            logoutBtn.addEventListener('click', logout);
+
+            // Login form
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(loginForm);
+                    const username = formData.get('username');
+                    const password = formData.get('password');
+                    
+                    if (login(username, password)) {
+                        alert('Login exitoso');
+                    } else {
+                        alert('Credenciales incorrectas');
+                    }
+                });
+            }
+
+            // Register form
+            const registerForm = document.getElementById('register-form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // TODO: Implement user registration logic
+                    alert('Registro exitoso. Por favor, inicia sesión.');
+                    showPage('login');
+                });
+            }
+
+            // Community form
+            const communityForm = document.getElementById('community-form');
+            if (communityForm) {
+                communityForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // TODO: Implement community creation logic
+                    alert('Solicitud de comunidad enviada exitosamente. Pendiente de aprobación.');
+                });
+            }
+
+            // Toggle between login and register
+            const showRegister = document.getElementById('show-register');
+            const showLogin = document.getElementById('show-login');
+            
+            if (showRegister) {
+                showRegister.addEventListener('click', () => showPage('register'));
+            }
+            
+            if (showLogin) {
+                showLogin.addEventListener('click', () => showPage('login'));
+            }
+
+            // Initialize application
+            function init() {
+                updateUI();
+                initCarousel();
+                showPage('landing');
+            }
+
+            // Start application
+            document.addEventListener('DOMContentLoaded', init);
+        })();
+    </script>
+</body>
+</html>
